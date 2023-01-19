@@ -173,8 +173,8 @@ def get_departments_route():
 
 
 def get_department_employees(tx, id):
-    query = "MATCH (e:Employee)-[:WORKS_IN]->(d:Department)" \
-            " WHERE id(d) = $id RETURN e"
+    query = "MATCH (e:Employee)-[:WORKS_IN]->(d:Department), (e2: Employee)-[:MANAGES]->(d:Department)" \
+            " WHERE id(e2) = $id RETURN e"
     results = tx.run(query, id=id).data()
     employees = [{'name': result['e']['name'], 'position': result['e']['position']} for result in results]
     return employees
